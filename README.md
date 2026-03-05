@@ -174,6 +174,3 @@ All API routes are prefixed with `/api/v1/`.
 | **Teacher** | Create courses, problems, assessments for assigned batches |
 | **Student** | Enroll in courses, solve problems, take assessments |
 
-## License
-
-This project was built as part of an internship at Bitwise.
