@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import axiosInstance from "./axios";
 
 export default function useLogs() {
   const [role, setRole] = useState<number | null>(null);
@@ -11,8 +10,11 @@ export default function useLogs() {
   useEffect(() => {
     const fetchRole = async () => {
       try {
-        const response = await axiosInstance.get("/api/logs");
-        setRole(response.data.data);
+        // /api/logs is a Next.js route — must use relative fetch, not axiosInstance (which points to backend)
+        const response = await fetch("/api/logs");
+        if (!response.ok) throw new Error("Failed to fetch role");
+        const json = await response.json();
+        setRole(json.data);
       } catch (err: any) {
         setError(err?.message || "Failed to fetch role");
       } finally {

@@ -5,25 +5,37 @@ const getUrl = (id: string, entity: string, operation: string) => {
   let url = "";
   switch (entity) {
     case "institution":
-      url = `/api/admin/institution/${id}/${operation}`;
+      url = operation === "update"
+        ? `/api/v1/institutions/update-institution-by-id/${id}`
+        : `/api/v1/institutions/delete-institution-by-id/${id}`;
       break;
     case "vendor":
-      url = `/api/admin/vendor/${id}/${operation}`;
+      url = operation === "update"
+        ? `/api/v1/vendors/update-vendor-by-id/${id}`
+        : `/api/v1/vendors/delete-vendor-by-id/${id}`;
       break;
     case "student":
-      url = `/api/admin/student/${id}/${operation}`;
+      url = operation === "update"
+        ? `/api/v1/students/update-student-by-id/${id}`
+        : `/api/v1/students/delete-student-by-id/${id}`;
       break;
     case "batch":
-      url = `/api/admin/batch/${id}/${operation}`;
+      url = operation === "update"
+        ? `/api/v1/batches/update-batch-by-id/${id}`
+        : `/api/v1/batches/delete-batch-by-id/${id}`;
       break;
     case "teacher":
-      url = `/api/admin/teacher/${id}/${operation}`;
+      url = operation === "update"
+        ? `/api/v1/teachers/update-teacher-by-id/${id}`
+        : `/api/v1/teachers/delete-teacher-by-id/${id}`;
       break;
     case "admin":
-      url = `/api/admin/admins/${id}/${operation}`;
+      url = operation === "update"
+        ? `/api/v1/admins/update-admin-by-id/${id}`
+        : `/api/v1/admins/delete-admin-by-id/${id}`;
       break;
     case "courses":
-      url = `/api/course/enrollments/${id}/${operation}`;
+      url = `/api/v1/courses/enrollments/${id}/${operation}`;
       break;
   }
   return url;
@@ -31,9 +43,9 @@ const getUrl = (id: string, entity: string, operation: string) => {
 export const updateEntity = async (id: string, data: any, stateFn: any) => {
   const toastId = toast.loading("Saving Changes...");
   try {
-    const updatedData = await axiosInstance.post(
+    const updatedData = await axiosInstance.put(
       getUrl(id, data.entity, "update"),
-      data,
+      data.data,
     );
     toast.success("Saved Changes...", { id: toastId });
     if (stateFn) {
@@ -44,12 +56,10 @@ export const updateEntity = async (id: string, data: any, stateFn: any) => {
   }
 };
 export const deleteEntity = async (id: string, data: any, stateFn: any) => {
-  // console.log("hello inside the function");
   const toastId = toast.loading("Deleting...");
   try {
-    const deleteData = await axiosInstance.post(
+    const deleteData = await axiosInstance.delete(
       getUrl(id, data.entity, "delete"),
-      data,
     );
     toast.success("Deleted Entity...", { id: toastId });
     stateFn(deleteData.data);

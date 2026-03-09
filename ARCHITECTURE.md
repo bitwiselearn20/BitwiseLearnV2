@@ -42,4 +42,3 @@
 - **Added latency** — every API call does: `client → gateway (HTTP) → service (HTTP)` instead of direct in-process calls
 - **Operational overhead** — 9 Dockerfiles, 9 `requirements.txt`, docker-compose, shared package versioning, gateway routing table to maintain
 - **Shared package is a hidden monolith** — `shared/` contains models, schemas, middleware, services, utils, and config; changing a model requires updating and redeploying every service
-

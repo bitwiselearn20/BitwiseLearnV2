@@ -25,7 +25,7 @@ const useVendor = create<VendorStore>()(
       logout: () => set({ info: null }),
     }),
     {
-      name: "institute-storage",
+      name: "vendor-storage",
       partialize: (state) => ({
         info: state.info, // persist ONLY data
       }),

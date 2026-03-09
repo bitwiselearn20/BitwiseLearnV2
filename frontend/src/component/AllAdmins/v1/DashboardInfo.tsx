@@ -10,9 +10,9 @@ type UserData = {
   id: string;
   name: string;
   email: string;
-  ROLE: string;
+  role: string;
   createdAt: string;
-  updatedAt: string;
+  updatedAt?: string;
 };
 
 type UpdatePayload = {
@@ -27,12 +27,12 @@ type DeletePayload = {
 
 type Props = {
   data: UserData[];
-  onUpdate: (payload: UpdatePayload) => void;
-  onDelete: (payload: DeletePayload) => void;
 };
 
-function formatDate(date: string) {
-  return new Date(date).toLocaleDateString();
+function formatDate(date: string | null | undefined) {
+  if (!date) return "—";
+  const d = new Date(date);
+  return isNaN(d.getTime()) ? "—" : d.toLocaleDateString();
 }
 
 function formatValue(value: any) {
@@ -44,7 +44,7 @@ function formatValue(value: any) {
   return String(value);
 }
 
-export default function DashboardInfo({ data, onUpdate, onDelete }: Props) {
+export default function DashboardInfo({ data }: Props) {
   const [selected, setSelected] = useState<UserData | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState<UserData | null>(null);
@@ -156,7 +156,7 @@ export default function DashboardInfo({ data, onUpdate, onDelete }: Props) {
                   <span
                     className={`rounded-md bg-primaryBlue/20 px-2 py-1 text-xs font-semibold ${Colors.text.special}`}
                   >
-                    {user.ROLE}
+                    {user.role}
                   </span>
                 </td>
 
@@ -253,7 +253,7 @@ export default function DashboardInfo({ data, onUpdate, onDelete }: Props) {
                     key === "id" ||
                     key === "createdAt" ||
                     key === "updatedAt" ||
-                    key === "ROLE";
+                    key === "role";
 
                   return (
                     <div key={key}>

@@ -116,8 +116,8 @@ export default function AdminLoginV1() {
         data: { email, password, role: "ADMIN" },
       });
       router.push("/admin-dashboard");
-    } catch (err) {
-      // console.error("Login failed", err);
+    } catch (err: any) {
+      toast.error(err?.response?.data?.error || err?.message || "Login failed");
     } finally {
       setLoading(false);
     }

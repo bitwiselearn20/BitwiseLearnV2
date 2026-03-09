@@ -75,7 +75,7 @@ async def get_all_institutions(current_user: dict = Depends(get_current_user)):
         "phone_number": i.phone_number, "secondary_phone_number": i.secondary_phone_number,
         "secondary_email": i.secondary_email,
         "created_by": str(i.created_by), "created_by_vendor_id": str(i.created_by_vendor_id) if i.created_by_vendor_id else None,
-        "created_at": i.created_at.isoformat()
+        "created_at": i.created_at.isoformat(timespec="milliseconds") if i.created_at else None
     } for i in institutions]
     return api_response(200, "Institutions fetched", data=data)
 
@@ -92,7 +92,7 @@ async def get_institution_by_id(id: str, current_user: dict = Depends(get_curren
         "secondary_phone_number": inst.secondary_phone_number, "secondary_email": inst.secondary_email,
         "created_by": str(inst.created_by),
         "created_by_vendor_id": str(inst.created_by_vendor_id) if inst.created_by_vendor_id else None,
-        "created_at": inst.created_at.isoformat()
+        "created_at": inst.created_at.isoformat(timespec="milliseconds") if inst.created_at else None
     })
 
 
@@ -104,12 +104,12 @@ async def get_institutions_by_vendor(id: str, current_user: dict = Depends(get_c
     data = [{
         "id": str(i.id), "name": i.name, "email": i.email,
         "address": i.address, "phone_number": i.phone_number,
-        "created_at": i.created_at.isoformat()
+        "created_at": i.created_at.isoformat(timespec="milliseconds") if i.created_at else None
     } for i in institutions]
     return api_response(200, "Institutions fetched", data=data)
 
 
-@router.put("/update-insititution-by-id/{id}")
+@router.put("/update-institution-by-id/{id}")
 async def update_institution(id: str, body: UpdateInstitutionRequest, current_user: dict = Depends(get_current_user)):
     inst = await Institution.get(PydanticObjectId(id))
     if not inst:

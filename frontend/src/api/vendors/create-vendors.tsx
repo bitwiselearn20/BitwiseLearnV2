@@ -22,7 +22,7 @@ export const createVendors = async (payload: CreateVendor) => {
   };
   try {
     const response = await axiosInstance.post(
-      "/api/vendor/create-vendor",
+      "/api/v1/vendors/create-vendor",
       requestBody,
     );
 

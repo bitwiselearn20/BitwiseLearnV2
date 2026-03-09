@@ -202,7 +202,7 @@ async def verify_forgot_password(body: VerifyOtpRequest, response: Response):
     response.set_cookie(
         key="reset_token", value=reset_tok, httponly=True, samesite="none", secure=True, max_age=600
     )
-    return api_response(200, "OTP verified", data={"verified": True})
+    return api_response(200, "OTP verified", data={"verified": True, "reset_token": reset_tok})
 
 
 @router.post("/reset-password")

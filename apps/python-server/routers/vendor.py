@@ -56,7 +56,7 @@ async def get_all_vendors(current_user: dict = Depends(_read_roles)):
         "id": str(v.id), "name": v.name, "email": v.email,
         "phone_number": v.phone_number, "tagline": v.tagline,
         "website_link": v.website_link,
-        "created_at": v.created_at.isoformat()
+        "created_at": v.created_at.isoformat(timespec="milliseconds") if v.created_at else None
     } for v in vendors]
     return api_response(200, "Vendors fetched", data=data)
 
@@ -71,7 +71,7 @@ async def get_vendor_by_id(id: str, current_user: dict = Depends(get_current_use
         "secondary_email": vendor.secondary_email, "phone_number": vendor.phone_number,
         "secondary_phone_number": vendor.secondary_phone_number,
         "tagline": vendor.tagline, "website_link": vendor.website_link,
-        "created_at": vendor.created_at.isoformat()
+        "created_at": vendor.created_at.isoformat(timespec="milliseconds") if vendor.created_at else None
     })
 
 
