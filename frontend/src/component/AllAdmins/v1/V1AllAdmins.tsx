@@ -25,10 +25,12 @@ function V1AllAdmins() {
       await createAdmin(data);
       setAddNew(false);
       toast.success("Admin Created Successfully", { id: toastId });
-      getAllAdmins(setData);
-    } catch (err) {
-      toast.error("Error creating Admin", { id: toastId });
-      // console.error(err);
+      await getAllAdmins(setData);
+    } catch (err: any) {
+      toast.error(
+        err?.response?.data?.error || err?.message || "Error creating Admin",
+        { id: toastId },
+      );
     }
   };
   return (

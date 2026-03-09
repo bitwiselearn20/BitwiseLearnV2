@@ -49,8 +49,14 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(response.data.data, { status: 200 });
   } catch (error: any) {
-    console.dir("Error loggin in :", error.message);
-    console.log(error);                 
-    return NextResponse.json({ error: "Failed loggin in " }, { status: 500 });
+    const statusCode = error?.response?.status || 500;
+    const backendMessage =
+      error?.response?.data?.error ||
+      error?.response?.data?.message ||
+      error?.message ||
+      "Failed loggin in";
+
+    console.dir("Error loggin in :", backendMessage);
+    return NextResponse.json({ error: backendMessage }, { status: statusCode });
   }
 }

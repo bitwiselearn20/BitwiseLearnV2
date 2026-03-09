@@ -1,11 +1,4 @@
 services:
-  mongodb:
-    image: mongo:7
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongo_data:/data/db
-
   rabbitmq:
     image: rabbitmq:3-management
     ports:
@@ -46,10 +39,9 @@ services:
       - "8001:8001"
     env_file: .env
     environment:
-      DATABASE_URL: mongodb://mongodb:27017/bitwiselearn
+      DATABASE_URL: ${DATABASE_URL}
       MQ_CLIENT: amqp://guest:guest@rabbitmq/
     depends_on:
-      - mongodb
       - rabbitmq
 
   user-service:
@@ -60,10 +52,9 @@ services:
       - "8002:8002"
     env_file: .env
     environment:
-      DATABASE_URL: mongodb://mongodb:27017/bitwiselearn
+      DATABASE_URL: ${DATABASE_URL}
       MQ_CLIENT: amqp://guest:guest@rabbitmq/
     depends_on:
-      - mongodb
       - rabbitmq
 
   course-service:
@@ -74,10 +65,9 @@ services:
       - "8003:8003"
     env_file: .env
     environment:
-      DATABASE_URL: mongodb://mongodb:27017/bitwiselearn
+      DATABASE_URL: ${DATABASE_URL}
       MQ_CLIENT: amqp://guest:guest@rabbitmq/
     depends_on:
-      - mongodb
       - rabbitmq
 
   problem-service:
@@ -88,10 +78,9 @@ services:
       - "8004:8004"
     env_file: .env
     environment:
-      DATABASE_URL: mongodb://mongodb:27017/bitwiselearn
+      DATABASE_URL: ${DATABASE_URL}
       MQ_CLIENT: amqp://guest:guest@rabbitmq/
     depends_on:
-      - mongodb
       - rabbitmq
 
   assessment-service:
@@ -102,10 +91,9 @@ services:
       - "8005:8005"
     env_file: .env
     environment:
-      DATABASE_URL: mongodb://mongodb:27017/bitwiselearn
+      DATABASE_URL: ${DATABASE_URL}
       MQ_CLIENT: amqp://guest:guest@rabbitmq/
     depends_on:
-      - mongodb
       - rabbitmq
 
   code-service:
@@ -116,10 +104,9 @@ services:
       - "8006:8006"
     env_file: .env
     environment:
-      DATABASE_URL: mongodb://mongodb:27017/bitwiselearn
+      DATABASE_URL: ${DATABASE_URL}
       MQ_CLIENT: amqp://guest:guest@rabbitmq/
     depends_on:
-      - mongodb
       - rabbitmq
 
   notification-service:
@@ -142,11 +129,7 @@ services:
       - "8008:8008"
     env_file: .env
     environment:
-      DATABASE_URL: mongodb://mongodb:27017/bitwiselearn
+      DATABASE_URL: ${DATABASE_URL}
       MQ_CLIENT: amqp://guest:guest@rabbitmq/
     depends_on:
-      - mongodb
       - rabbitmq
-
-volumes:
-  mongo_data:

@@ -13,6 +13,11 @@ from enums import UserType
 async def get_current_user(request: Request) -> dict:
     token = request.cookies.get("token")
     if not token:
+        auth_header = request.headers.get("Authorization", "")
+        if auth_header.startswith("Bearer "):
+            token = auth_header.removeprefix("Bearer ").strip()
+
+    if not token:
         raise HTTPException(status_code=401, detail="Not authenticated")
 
     payload = verify_access_token(token)
@@ -20,7 +25,7 @@ async def get_current_user(request: Request) -> dict:
         raise HTTPException(status_code=401, detail="Invalid or expired token")
 
     user_id = payload.get("id")
-    user_type = payload.get("type")
+    user_type = str(payload.get("type", "")).upper()
 
     if not user_id or not user_type:
         raise HTTPException(status_code=401, detail="Invalid token payload")

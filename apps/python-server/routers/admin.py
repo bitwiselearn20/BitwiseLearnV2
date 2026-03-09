@@ -46,7 +46,7 @@ async def create_admin(body: CreateAdminRequest, current_user: dict = Depends(su
 async def get_all_admins(current_user: dict = Depends(superadmin_only)):
     admins = await User.find(User.role == UserType.ADMIN).to_list()
     data = [{"id": str(a.id), "name": a.name, "email": a.email, "role": a.role,
-             "created_at": a.created_at.isoformat()} for a in admins]
+             "created_at": a.created_at.isoformat(timespec="milliseconds") if a.created_at else None} for a in admins]
     return api_response(200, "Admins fetched", data=data)
 
 

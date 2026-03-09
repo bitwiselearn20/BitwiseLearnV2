@@ -26,7 +26,7 @@ export const useInstitution = create<InstituteStore>()(
       logout: () => set({ info: null }),
     }),
     {
-      name: "institute-storage",
+      name: "institution-storage-v2",
       partialize: (state) => ({
         info: state.info, // persist ONLY data
       }),

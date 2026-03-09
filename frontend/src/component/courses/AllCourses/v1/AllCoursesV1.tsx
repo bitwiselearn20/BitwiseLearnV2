@@ -172,7 +172,7 @@ export default function AllCoursesV1() {
       try {
         setLoading(true);
         let res;
-        if (adminInfo?.id && adminInfo.id.length > 0) {
+        if (adminInfo?.data?.id && adminInfo.data.id.length > 0) {
           res = await getAllCourses();
         } else {
           res = await getStudentCourses();

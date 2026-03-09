@@ -62,7 +62,7 @@ export default function HeroSection() {
   const institution = useInstitution();
   const Colors = useColors();
 
-  const institutionId = institution.info?.data.id;
+  const institutionId = institution.info?.data?.id;
   const [batches, setBatches] = useState<any[]>([]);
   const [filteredBatches, setFilteredBatches] = useState<any[]>([]);
 

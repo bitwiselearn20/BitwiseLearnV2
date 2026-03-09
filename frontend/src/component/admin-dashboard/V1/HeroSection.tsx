@@ -21,7 +21,7 @@ function Header() {
   const Colors = useColors();
   const admin = useAdmin();
 
-  if (!admin.info) return null;
+  if (!admin.info || !admin.info.data) return null;
 
   const { name, email } = admin.info.data;
 
@@ -80,7 +80,7 @@ export default function HeroSection() {
 }
 
 /* ---------------- ENTITY TABS ---------------- */
-import { School, Handshake, ShieldCheck } from "lucide-react";
+import { School, Handshake, ShieldCheck, Users } from "lucide-react";
 import useLogs from "@/lib/useLogs";
 
 const ENTITY_META: Record<
@@ -92,11 +92,11 @@ const ENTITY_META: Record<
     accent: string;
   }
 > = {
-  institutions: {
-    icon: School,
-    label: "Institutions",
-    tagline: "Education centers associated with us",
-    accent: "from-blue-500/20 to-blue-500/5",
+  admins: {
+    icon: ShieldCheck,
+    label: "Admins",
+    tagline: "People maintaining our platform",
+    accent: "from-orange-500/20 to-orange-500/5",
   },
   vendors: {
     icon: Handshake,
@@ -104,11 +104,17 @@ const ENTITY_META: Record<
     tagline: "Industry trainers who got involved",
     accent: "from-emerald-500/20 to-emerald-500/5",
   },
-  admins: {
-    icon: ShieldCheck,
-    label: "Admins",
-    tagline: "People maintaining our platform",
-    accent: "from-orange-500/20 to-orange-500/5",
+  institutions: {
+    icon: School,
+    label: "Institutions",
+    tagline: "Education centers associated with us",
+    accent: "from-blue-500/20 to-blue-500/5",
+  },
+  batches: {
+    icon: Users,
+    label: "Batches",
+    tagline: "Student groups managed across institutions",
+    accent: "from-purple-500/20 to-purple-500/5",
   },
 };
 
@@ -127,8 +133,8 @@ function EntityTabs({ fields, data }: EntityTabsProps) {
         if (!meta || !href) return null;
 
         const Icon = meta.icon;
-        if (field === "admins" && role && role !== 0) {
-          return;
+        if (field === "admins" && !loading && role !== 0) {
+          return null;
         }
         return (
           <Link

@@ -31,7 +31,7 @@ type Role =
     | "INSTITUTION";
 
 interface ResetPasswordFormProps {
-    resetToken: string;
+    resetToken?: string;
     role: Role;
     onSuccess: () => void;
 }

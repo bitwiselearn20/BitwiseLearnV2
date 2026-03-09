@@ -48,13 +48,21 @@ export function proxy(request: NextRequest) {
    * Auth check
    */
   const token = request.cookies.get("token")?.value;
-  const jwtData = token ? checkJWT(token) : null;
-  const role = jwtData?.type;
+  let role: string | undefined;
+
+  if (token) {
+    try {
+      const jwtData = checkJWT(token);
+      role = String(jwtData?.type || "").toUpperCase();
+    } catch {
+      role = undefined;
+    }
+  }
 
   if (!role) {
     return NextResponse.redirect(new URL("/student-login", request.url));
   }
-  if (role && role.includes("login")) {
+  if (role && role.includes("LOGIN")) {
     switch (role) {
       case "ADMIN":
       case "SUPERADMIN":
@@ -86,8 +94,8 @@ export function proxy(request: NextRequest) {
    */
   let allowedRoutes = URL_ACCESS_MAP[role];
 
-  // SUPERADMIN inherits ADMIN permissions
-  if (role === "SUPERADMIN") {
+  // SUPERADMIN has its own dedicated routes
+  if (role === "SUPERADMIN" && !allowedRoutes) {
     allowedRoutes = URL_ACCESS_MAP["ADMIN"];
   }
 

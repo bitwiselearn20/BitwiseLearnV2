@@ -19,6 +19,12 @@ async function handleLogin({ data }: { data: Prop }) {
 
   // save role
   localStorage.setItem("role", data.role);
+  if (resData?.tokens?.accessToken) {
+    localStorage.setItem("accessToken", resData.tokens.accessToken);
+  }
+  if (resData?.tokens?.refreshToken) {
+    localStorage.setItem("refreshToken", resData.tokens.refreshToken);
+  }
 
   // grab zustand setters
   const { setData: setAdmin } = useAdmin.getState();
@@ -30,7 +36,7 @@ async function handleLogin({ data }: { data: Prop }) {
   // set correct store based on role
   switch (data.role) {
     case "ADMIN":
-      setAdmin(resData);
+      setAdmin({ data: resData });
       break;
 
     case "STUDENT":
@@ -42,11 +48,11 @@ async function handleLogin({ data }: { data: Prop }) {
       break;
 
     case "INSTITUTION":
-      setInstitution(resData);
+      setInstitution({ data: resData });
       break;
 
     case "VENDOR":
-      setVendor(resData);
+      setVendor({ data: resData });
       break;
   }
 
